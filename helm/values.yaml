@@ -8,7 +8,7 @@ images:
 replicas:
   web: 2
   fbgServer: 2
-  bgio: 1
+  bgio: 2
 
 fbgServer:
   jwtSecret: SECRET_TO_SIGN_JWT

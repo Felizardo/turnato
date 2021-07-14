@@ -27,6 +27,12 @@ spec:
           value: postgresql://{{ .Values.postgresql.postgresqlUsername }}:{{ .Values.postgresql.postgresqlPassword }}@{{ .Release.Name }}-postgresql.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.postgresql.service.port }}/{{ .Values.postgresql.postgresqlDatabase }}
         - name: BGIO_PORT
           value: "8001"
+        - name: FBG_REDIS_HOST
+          value: {{ .Release.Name }}-redis-master-0.{{ .Release.Name }}-redis-headless.{{ .Release.Namespace }}.svc.{{ .Values.redis.clusterDomain }}
+        - name: FBG_REDIS_PORT
+          value: {{ .Values.redis.master.service.port | quote }}
+        - name: FBG_REDIS_PASSWORD
+          value: {{ .Values.redis.auth.password }}
         image: {{ .Values.images.web }} 
         imagePullPolicy: {{ .Values.images.imagePullPolicy }}
         livenessProbe:

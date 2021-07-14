@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
@@ -8,6 +8,7 @@ metadata:
     nginx.ingress.kubernetes.io/cors-allow-origin: https://{{ .Values.domain }}
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/affinity: cookie
   generation: 1
   name: ingress
 spec:
@@ -16,18 +17,24 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: {{ .Release.Name }}-bgio
-          servicePort: 80
+          service: 
+            name: {{ .Release.Name }}-bgio
+            port:
+              number: 80
         path: /socket.io/
         pathType: ImplementationSpecific
       - backend:
-          serviceName: {{ .Release.Name }}-fbg-server
-          servicePort: 80
+          service:
+            name: {{ .Release.Name }}-fbg-server
+            port:
+              number: 80
         path: /graphql
         pathType: ImplementationSpecific
       - backend:
-          serviceName: {{ .Release.Name }}-web
-          servicePort: 80
+          service:
+            name: {{ .Release.Name }}-web
+            port:
+              number: 80
         path: /
         pathType: ImplementationSpecific
   tls:
